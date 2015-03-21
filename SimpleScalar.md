@@ -55,6 +55,28 @@ $ sudo update-alternatives --config gcc
 
 至此编译成功。
 
+然后随意写个helloworld程序，尝试编译一下 gcc -g helloworld.c
+
+如果不能通过，哈哈～你跟我一样倒霉～
+
+/usr/bin/ld: cannot find crt1.o
+ln -sf /usr/lib/i386-linux-gnu/crt1.o /usr/lib/crt1.o
+可能是双版本gcc的原因，需要将/usr/lib/i386-linux-gnu下的crt1.o 设置链接到/usr/lib/下
+
+/usr/bin/ld: cannot find -lgcc_s
+/usr/lib/gcc/i486-linux-gnu/3.4.6/文件夹下查找libgcc_s.so文件。libgcc_s.so是一个链接文件，链接到对应目录的libgcc_s.so.1文件。打开libgcc_s.so弹出提示链接已损坏
+
+先定向libgcc_s.so.1,然后重新设置链接
+
+locate libgcc_s.so.1      
+ln -sf /lib/i386-linux-gnu/libgcc_s.so.1/usr/lib/gcc/i486-linux-gnu/3.4.6/libgcc_s.so
+还有个链接也有问题，同理处理
+
+里面提到的几个问题都解决了，在编译Helloworld的时候还遇到了头文件的问题，打出了一堆错误信息，不贴了，解决方法：
+export LIBRARY_PATH=/usr/lib/i386-linux-gnu
+export C_INCLUDE_PATH=/usr/include/i386-linux-gnu
+export CPLUS_INCLUDE_PATH=/usr/include/i386-linux-gnu
+
 ## SimpleScalar Admin https://wiki.cse.buffalo.edu/services/content/simplescalararm-admin
 Introduction
 
